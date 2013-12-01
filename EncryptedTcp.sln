@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EncryptedTcp", "EncryptedTcp\EncryptedTcp.csproj", "{7C8E52BC-4EC9-4FD7-84F1-958E1F36B203}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleServer", "ConsoleServer\ConsoleServer.csproj", "{A5AB794E-E486-4E3D-B591-D6F334BD3788}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{EB7EC5EA-90E7-490D-95FC-6BD9A92E34C2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C8E52BC-4EC9-4FD7-84F1-958E1F36B203}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C8E52BC-4EC9-4FD7-84F1-958E1F36B203}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C8E52BC-4EC9-4FD7-84F1-958E1F36B203}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C8E52BC-4EC9-4FD7-84F1-958E1F36B203}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5AB794E-E486-4E3D-B591-D6F334BD3788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5AB794E-E486-4E3D-B591-D6F334BD3788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5AB794E-E486-4E3D-B591-D6F334BD3788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5AB794E-E486-4E3D-B591-D6F334BD3788}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB7EC5EA-90E7-490D-95FC-6BD9A92E34C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB7EC5EA-90E7-490D-95FC-6BD9A92E34C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB7EC5EA-90E7-490D-95FC-6BD9A92E34C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB7EC5EA-90E7-490D-95FC-6BD9A92E34C2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -8,14 +8,18 @@ This library makes secure tcp-connection between server and any number of client
 
 You need download sources to your PC, compile it and add as reference to your soloution to use it.
 
+
 How to use:
+
 1) Include it in your server-part and override the Server class when you define
 what you will do with your clients.
 
 2) Include it in your client-part and just call any methods, which available for Client class to Recieve and Send any data like bytes or plain text
 
 
+
 How it works:
+
 1) Server is running for listening all incoming connections on defined port.
 
 2) Client connect to server

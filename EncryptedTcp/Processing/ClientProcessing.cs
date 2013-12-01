@@ -11,9 +11,8 @@ namespace EncryptedTcp.Processing
 {
     public class ClientProcessing
     {
-        private TcpClient _connectionFromServerForReceive;
-        private TcpClient _connectionToServerForSend;
-        private TcpListener _listenerForServerConnectionForReceive;
+        private Socket _connectionFromServerForReceive;
+        private Socket _connectionToServerForSend;
 
         private string IP { get; set; }
         private int Port { get; set; }
@@ -28,20 +27,22 @@ namespace EncryptedTcp.Processing
 
         public bool Connect()
         {
-            _connectionToServerForSend = new TcpClient();
+            _connectionToServerForSend = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _connectionToServerForSend.Connect(IP, Port);
-            IPEndPoint localIpEndPoint = _connectionToServerForSend.Client.LocalEndPoint as IPEndPoint;
-            _listenerForServerConnectionForReceive = new TcpListener(localIpEndPoint);
-            _listenerForServerConnectionForReceive.Start(1);
-            _connectionFromServerForReceive = _listenerForServerConnectionForReceive.AcceptTcpClient();
+            IPEndPoint localIpEndPoint = _connectionToServerForSend.LocalEndPoint as IPEndPoint;
+            Socket _listenerForServerConnectionForReceive = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _listenerForServerConnectionForReceive.Bind(localIpEndPoint);
+            _listenerForServerConnectionForReceive.Listen(2);
+            _connectionFromServerForReceive=_listenerForServerConnectionForReceive.Accept();
             return true;
         }
 
 
         public void Send(byte[] data)
         {
-            NetworkStream networkStream = _connectionToServerForSend.GetStream();
-            networkStream.Write(data, 0, data.Length);
+            while (_connectionToServerForSend.Available > 0)
+                Thread.Sleep(10);
+            _connectionToServerForSend.Send(data);
         }
 
 
@@ -54,25 +55,21 @@ namespace EncryptedTcp.Processing
 
         public byte[] Receive()
         {
-            NetworkStream networkStream = _connectionFromServerForReceive.GetStream();
-            if (networkStream.CanRead)
+            while (_connectionFromServerForReceive.Available == 0)
             {
-                while (!networkStream.DataAvailable)
-                {
-                    Thread.Sleep(100);
-                }
-                using (MemoryStream result = new MemoryStream())
-                {
-                    byte[] buffer = new byte[8192];
-                    while (networkStream.DataAvailable)
-                    {
-                        int readedData = networkStream.Read(buffer, 0, buffer.Length);
-                        result.Write(buffer, 0, readedData);
-                    }
-                    return result.ToArray();
-                }
+                Thread.Sleep(100);
             }
-            return new byte[] { };
+
+            using (MemoryStream result = new MemoryStream())
+            {
+                byte[] buffer = new byte[8192];
+                while (_connectionFromServerForReceive.Available > 0)
+                {
+                    int readedData = _connectionFromServerForReceive.Receive(buffer);
+                    result.Write(buffer, 0, readedData);
+                }
+                return result.ToArray();
+            }
         }
 
 

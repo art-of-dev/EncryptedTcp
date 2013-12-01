@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EncryptedTcp;
 using System.Net.Sockets;
 using EncryptedTcp.Processing;
+using System.Threading;
 namespace ConsoleServer
 {
     class Program
@@ -21,9 +22,10 @@ namespace ConsoleServer
     {
         public override void ClientThread(object clientSocket)
         {
-            TcpClient client = (TcpClient)clientSocket;
+            Socket client = (Socket)clientSocket;
             ServerProcessingEncrypted clientProc = new ServerProcessingEncrypted(client);
-            Console.WriteLine("Client: {0}", clientProc.ReceiveText());
+            string text = clientProc.ReceiveText();
+            Console.WriteLine("Client: {0}", text);
         }
     }
 }

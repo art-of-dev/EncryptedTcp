@@ -11,22 +11,23 @@ namespace EncryptedTcp
 {
     class ServerProcessing
     {
-        private TcpClient _connectionToServerForReceive;
-        private TcpClient _connectionFromServerForSend;
+        private Socket _connectionToServerForReceive;
+        private Socket _connectionFromServerForSend;
 
         private ServerProcessing() { }
-        public ServerProcessing (TcpClient client)
+        public ServerProcessing(Socket client)
         {
             _connectionToServerForReceive = client;
-            IPEndPoint _clientEndPoint = _connectionToServerForReceive.Client.RemoteEndPoint as IPEndPoint;
-            _connectionFromServerForSend = new TcpClient();
+            IPEndPoint _clientEndPoint = client.RemoteEndPoint as IPEndPoint;
+            _connectionFromServerForSend = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _connectionFromServerForSend.Connect(_clientEndPoint);
         }
 
         public void Send(byte[] data)
         {
-            NetworkStream networkStream = _connectionFromServerForSend.GetStream();
-            networkStream.Write(data, 0, data.Length);
+            while (_connectionFromServerForSend.Available > 0)
+                Thread.Sleep(10);
+            _connectionFromServerForSend.Send(data);
         }
 
         public void SendText(string text)
@@ -37,25 +38,21 @@ namespace EncryptedTcp
 
         public byte[] Receive()
         {
-            NetworkStream networkStream = _connectionToServerForReceive.GetStream();
-            if (networkStream.CanRead)
+            while (_connectionToServerForReceive.Available == 0)
             {
-                while (!networkStream.DataAvailable)
-                {
-                    Thread.Sleep(100);
-                }
-                using (MemoryStream result = new MemoryStream())
-                {
-                    byte[] buffer = new byte[8192];
-                    while (networkStream.DataAvailable)
-                    {
-                        int readedData = networkStream.Read(buffer, 0, buffer.Length);
-                        result.Write(buffer, 0, readedData);
-                    }
-                    return result.ToArray();
-                }
+                Thread.Sleep(100);
             }
-            return new byte[] { };
+
+            using (MemoryStream result = new MemoryStream())
+            {
+                byte[] buffer = new byte[8192];
+                while (_connectionToServerForReceive.Available>0)
+                {
+                    int readedData = _connectionToServerForReceive.Receive(buffer);
+                    result.Write(buffer, 0, readedData);
+                }
+                return result.ToArray();
+            }
         }
 
         public string ReceiveText()

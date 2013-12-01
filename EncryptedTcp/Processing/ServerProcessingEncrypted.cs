@@ -14,7 +14,7 @@ namespace EncryptedTcp.Processing
         private ServerProcessing _proc;
         private Aes256 _aes256;
 
-        public ServerProcessingEncrypted(TcpClient client)
+        public ServerProcessingEncrypted(Socket client)
         {
             _proc = new ServerProcessing(client);
             _aes256 = new Aes256();
